@@ -35,7 +35,7 @@ torch.manual_seed(SEED)
 
 if device:
     torch.cuda.manual_seed(SEED)
-
+cuda=device
 # dataloader arguments - something you'll fetch these from cmdprmt
 dataloader_args = dict(shuffle=True, batch_size=512, num_workers=1, pin_memory=True) if cuda else dict(shuffle=True, batch_size=64)
 
