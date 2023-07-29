@@ -4,7 +4,7 @@
 
 # models folder : 
 
-contains all model files currently resnet.py file is there.
+contains all model files currently resnet.py (Resnet 18/34) file is there.
 
 # main.py : 
 
