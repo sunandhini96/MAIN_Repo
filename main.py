@@ -16,6 +16,29 @@ from utils import *
 
 from models.resnet import *
 
+
+# functions to show an image
+
+
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
+
+
+# get some random training images
+dataiter = iter(train_loader)
+images, labels = next(dataiter)
+classes = ('plane', 'car', 'bird', 'cat',
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+
+# show images
+imshow(torchvision.utils.make_grid(images[:20]))
+# print labels
+print(' '.join(f'{classes[labels[j]]:5s}' for j in range(20)))
+
 # loading the dataset
 mean=(0.4914, 0.4822, 0.4465)
 std=(0.2470, 0.2435, 0.2616)
