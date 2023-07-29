@@ -154,7 +154,7 @@ def display_gradcam_output(data: list,
         plt.yticks([])
 
 
-def display_loss_and_accuracies():
+
     
 
 
