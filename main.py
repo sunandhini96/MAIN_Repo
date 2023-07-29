@@ -68,7 +68,7 @@ def display_images(images,classes):
     # print labels
     print(' '.join(f'{classes[labels[j]]:5s}' for j in range(20)))
 
-display_images(train_loader,classes)
+display_images(images,classes)
 # exp = datasets.CIFAR10('./data', train=True, download=True)
 # exp_data = exp.data
 
