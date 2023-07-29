@@ -3,7 +3,20 @@ gradcam,
 misclassification code '''
 import math
 from typing import NoReturn
+from torchvision import datasets, transforms
+import torch
+import torchvision
+import torchvision.transforms as transforms
+import albumentations as A
+import matplotlib.pyplot as plt
+import numpy as np
+import torch.nn as nn
+from torchsummary import summary
+from tqdm import tqdm
+from torch.optim.lr_scheduler import StepLR
+import torch.optim as optim
 
+from models import resnet
 # Third-Party Imports
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,7 +51,55 @@ def test_transform_function(mean,std):
                                             ])
       return lambda img:test_transform(image=np.array(img))["image"]
 
+def get_summary(model: 'object of model architecture', input_size: tuple) -> NoReturn:
+    """
+    Function to get the summary of the model architecture
+    :param model: Object of model architecture class
+    :param input_size: Input data shape (Channels, Height, Width)
+    """
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+    network = model.to(device)
+    summary(network, input_size=input_size)
 
+
+def get_misclassified_data(model, device, test_loader):
+    """
+    Function to run the model on test set and return misclassified images
+    :param model: Network Architecture
+    :param device: CPU/GPU
+    :param test_loader: DataLoader for test set
+    """
+    # Prepare the model for evaluation i.e. drop the dropout layer
+    model.eval()
+
+    # List to store misclassified Images
+    misclassified_data = []
+
+    # Reset the gradients
+    with torch.no_grad():
+        # Extract images, labels in a batch
+        for data, target in test_loader:
+
+            # Migrate the data to the device
+            data, target = data.to(device), target.to(device)
+
+            # Extract single image, label from the batch
+            for image, label in zip(data, target):
+
+                # Add batch dimension to the image
+                image = image.unsqueeze(0)
+
+                # Get the model prediction on the image
+                output = model(image)
+
+                # Convert the output from one-hot encoding to a value
+                pred = output.argmax(dim=1, keepdim=True)
+
+                # If prediction is incorrect, append the data
+                if pred != label:
+                    misclassified_data.append((image, label, pred))
+    return misclassified_data
 
 
 
