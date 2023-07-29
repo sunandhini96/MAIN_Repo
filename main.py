@@ -27,15 +27,16 @@ test = datasets.CIFAR10(root='./data', train=False,
 SEED = 1
 
 # CUDA?
-device = torch.cuda.is_available()
-print("CUDA Available?", device)
+cuda = torch.cuda.is_available()
+print("CUDA Available?", cuda)
 
 # For reproducibility
 torch.manual_seed(SEED)
-
-if device:
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda" if use_cuda else "cpu")
+if cuda:
     torch.cuda.manual_seed(SEED)
-cuda=device
+#cuda=device
 # dataloader arguments - something you'll fetch these from cmdprmt
 dataloader_args = dict(shuffle=True, batch_size=512, num_workers=1, pin_memory=True) if cuda else dict(shuffle=True, batch_size=64)
 
