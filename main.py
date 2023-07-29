@@ -15,7 +15,7 @@ from models import resnet
 from utils import *
 
 from models.resnet import *
-
+%matplotlib inline
 
 # functions to show an image
 
