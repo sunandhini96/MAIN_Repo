@@ -154,6 +154,86 @@ def display_gradcam_output(data: list,
         plt.xticks([])
         plt.yticks([])
 
+def get_classified_data(model, device, test_loader):
+    """
+    Function to run the model on test set and return misclassified images
+    :param model: Network Architecture
+    :param device: CPU/GPU
+    :param test_loader: DataLoader for test set
+    """
+    # Prepare the model for evaluation i.e. drop the dropout layer
+    model.eval()
+
+    # List to store misclassified Images
+    classified_data = []
+
+    # Reset the gradients
+    with torch.no_grad():
+        # Extract images, labels in a batch
+        for data, target in test_loader:
+
+            # Migrate the data to the device
+            data, target = data.to(device), target.to(device)
+
+            # Extract single image, label from the batch
+            for image, label in zip(data, target):
+
+                # Add batch dimension to the image
+                image = image.unsqueeze(0)
+
+                # Get the model prediction on the image
+                output = model(image)
+
+                # Convert the output from one-hot encoding to a value
+                pred = output.argmax(dim=1, keepdim=True)
+
+                # If prediction is incorrect, append the data
+                if pred == label:
+                    classified_data.append((image, label, pred))
+    return classified_data
+
+def display_cifar_misclassified_data(misclassified_data, classes, inv_normalize, number_of_samples=20):
+    """
+    Display misclassified CIFAR-10 data with predicted and true labels.
+
+    Parameters:
+        misclassified_data (list): A list of tuples, each containing (image, predicted_label, true_label).
+        classes (list or dict): A list or dictionary containing the class names.
+        inv_normalize (torchvision.transforms.Normalize): The inverse normalization transformation to convert images back to their original scale.
+        number_of_samples (int): The number of misclassified samples to display (default is 20).
+    """
+
+    num_samples = min(number_of_samples, len(misclassified_data))
+
+    fig, axes = plt.subplots(4, 5, figsize=(12, 10))
+    plt.subplots_adjust(hspace=0.5)
+
+    for i in range(num_samples):
+        ax = axes[i // 5, i % 5]
+        data_tuple = misclassified_data[i]
+
+        if len(data_tuple) == 3:
+            image, predicted_label, true_label = data_tuple
+
+            # Convert the image from a PyTorch tensor to a numpy array and apply inverse normalization
+            image = inv_normalize(torch.unsqueeze(image, 0))  # Add a batch dimension before normalization
+            image = image.squeeze().cpu().numpy().transpose(1, 2, 0)  # Remove batch dimension after normalization
+            image = np.clip(image, 0, 1)  # Clip values to ensure they are in the valid range [0, 1]
+
+            # Display the image
+            ax.imshow(image)
+            ax.set_title(f'Pred: {classes[predicted_label]}\nTrue: {classes[true_label]}')
+            ax.axis('off')
+        else:
+            print(f"Data at index {i} is not in the expected tuple format.")
+
+    plt.show()
+
+# Assuming the `get_misclassified_data` function returns a list of tuples, each containing (image, predicted_label, true_label).
+# Also, `classes` should be a list of class names (e.g., ['cat', 'dog', ...]) or a dictionary with class indices as keys and class names as values.
+
+# Example usage:
+# display_cifar_misclassified_data(misclassified_data, classes, inv_normalize, number_of_samples=20)
 
 
     
