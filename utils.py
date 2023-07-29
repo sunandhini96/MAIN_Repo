@@ -15,7 +15,7 @@ from torchsummary import summary
 from tqdm import tqdm
 from torch.optim.lr_scheduler import StepLR
 import torch.optim as optim
-from albumentations.pytorch import ToTensorV2
+from albumentations.pytorch.transforms import ToTensorV2
 
 from models import resnet
 # Third-Party Imports
