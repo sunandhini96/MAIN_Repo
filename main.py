@@ -58,7 +58,8 @@ train_loader = torch.utils.data.DataLoader(train, **dataloader_args)
 # test dataloader
 test_loader = torch.utils.data.DataLoader(test, **dataloader_args)
 # get some random training images
-classes = ('plane', 'car', 'bird', 'cat','deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+classes = ('plane', 'car', 'bird', 'cat',
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 dataiter = iter(train_loader)
 images, labels = next(dataiter)
 DISPLAY_SAMPLES = 20
@@ -69,7 +70,7 @@ def display_cifar_data_samples(train_loader, DISPLAY_SAMPLES, classes):
 
     imshow(torchvision.utils.make_grid(images[:DISPLAY_SAMPLES]))
     # print labels
-    print(' '.join(f'{classes[labels[j]]:5s}' for j in range(20)))
+    print(' '.join(f'{classes[labels[j]]:5s}' for j in range(DISPLAY_SAMPLES)))
     
 display_cifar_data_samples(train, DISPLAY_SAMPLES, classes)
 # exp = datasets.CIFAR10('./data', train=True, download=True)
