@@ -57,9 +57,6 @@ train_loader = torch.utils.data.DataLoader(train, **dataloader_args)
 
 # test dataloader
 test_loader = torch.utils.data.DataLoader(test, **dataloader_args)
-
-
-
 # get some random training images
 dataiter = iter(train_loader)
 images, labels = next(dataiter)
@@ -71,6 +68,8 @@ classes = ('plane', 'car', 'bird', 'cat',
 imshow(torchvision.utils.make_grid(images[:20]))
 # print labels
 print(' '.join(f'{classes[labels[j]]:5s}' for j in range(20)))
+
+
 # exp = datasets.CIFAR10('./data', train=True, download=True)
 # exp_data = exp.data
 
