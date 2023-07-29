@@ -33,7 +33,7 @@ print("CUDA Available?", device)
 # For reproducibility
 torch.manual_seed(SEED)
 
-if cuda:
+if device:
     torch.cuda.manual_seed(SEED)
 
 # dataloader arguments - something you'll fetch these from cmdprmt
