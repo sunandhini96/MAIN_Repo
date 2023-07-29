@@ -20,7 +20,6 @@ from models.resnet import *
 
 # functions to show an image
 
-
 def imshow(img):
     img = img / 2 + 0.5     # unnormalize
     npimg = img.numpy()
@@ -63,12 +62,12 @@ classes = ('plane', 'car', 'bird', 'cat','deer', 'dog', 'frog', 'horse', 'ship',
 dataiter = iter(train_loader)
 images, labels = next(dataiter)
 DISPLAY_SAMPLES = 20
-sample, _ = train[4]
+#sample, _ = train[4]
 def display_cifar_data_samples(train_loader, DISPLAY_SAMPLES, classes):
     dataiter = iter(train_loader)
     images, labels = next(dataiter)
 
-    imshow(torchvision.utils.make_grid(images[:20]))
+    imshow(torchvision.utils.make_grid(images[:DISPLAY_SAMPLES]))
     # print labels
     print(' '.join(f'{classes[labels[j]]:5s}' for j in range(20)))
     
