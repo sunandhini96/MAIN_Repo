@@ -128,10 +128,10 @@ def train(model, device, train_loader, criterion, scheduler, optimizer, use_l1=F
         loss.backward()
         optimizer.step()
         # updating LR
-        if scheduler:
-            if not isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                scheduler.step()
-                lr_trend.append(scheduler.get_last_lr()[0])
+        # if scheduler:
+        #     if not isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+        #scheduler.step()
+                #lr_trend.append(scheduler.get_last_lr()[0])
 
         train_loss += loss.item()
 
