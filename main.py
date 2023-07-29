@@ -231,7 +231,7 @@ def fit_model(net, optimizer, criterion, device, NUM_EPOCHS,train_loader, test_l
                 save_model(net, epoch, optimizer, save_path)
                 min_val_loss = test_loss
             else:
-                print(f'Valid loss did not inprove from {min_val_loss:.5f}\n')
+                print(f'Valid loss did not improve from {min_val_loss:.5f}\n')
         else:
             print()
 
@@ -241,9 +241,21 @@ def fit_model(net, optimizer, criterion, device, NUM_EPOCHS,train_loader, test_l
         testing_loss.append(test_loss)
         lr_trend.extend(lr_hist)    
 
+
     if scheduler:   
         return net, (training_acc, training_loss, testing_acc, testing_loss, lr_trend)
     else:
         return net, (training_acc, training_loss, testing_acc, testing_loss)
-    
+
+    fig, axs = plt.subplots(2,2,figsize=(15,10))
+    t=[t.cpu().item() for t in training_loss]
+    axs[0, 0].plot(t)
+    axs[0, 0].set_title("Training Loss")
+    axs[1, 0].plot(training_acc)
+    axs[1, 0].set_title("Training Accuracy")
+    axs[0, 1].plot(testing_loss)
+    axs[0, 1].set_title("Test Loss")
+    axs[1, 1].plot(testing_acc)
+    axs[1, 1].set_title("Test Accuracy")
+      
 
