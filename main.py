@@ -27,8 +27,8 @@ test = datasets.CIFAR10(root='./data', train=False,
 SEED = 1
 
 # CUDA?
-cuda = torch.cuda.is_available()
-print("CUDA Available?", cuda)
+device = torch.cuda.is_available()
+print("CUDA Available?", device)
 
 # For reproducibility
 torch.manual_seed(SEED)
