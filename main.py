@@ -59,8 +59,7 @@ train_loader = torch.utils.data.DataLoader(train, **dataloader_args)
 # test dataloader
 test_loader = torch.utils.data.DataLoader(test, **dataloader_args)
 # get some random training images
-    classes = ('plane', 'car', 'bird', 'cat',
-               'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+classes = ('plane', 'car', 'bird', 'cat','deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 def display_images(train_loader,classes):
     dataiter = iter(train_loader)
     images, labels = next(dataiter)
